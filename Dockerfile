@@ -2,7 +2,7 @@ FROM alpine:latest as builder
 WORKDIR /app
 COPY . ./
 
-FROM alpine:latest
+FROM python:3.11-alpine
 RUN apk update && apk add ca-certificates iptables ip6tables python3 py3-pip && rm -rf /var/cache/apk/*
 
 RUN pip3 install --no-cache-dir fastapi uvicorn
