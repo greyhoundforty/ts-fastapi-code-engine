@@ -3,9 +3,13 @@ WORKDIR /app
 COPY . ./
 
 FROM python:3.11-alpine
-RUN apk update && apk add ca-certificates iptables ip6tables python3 py3-pip && rm -rf /var/cache/apk/*
+RUN apk update && apk add ca-certificates iptables ip6tables python3 && rm -rf /var/cache/apk/*
 
-RUN pip3 install --no-cache-dir fastapi uvicorn
+# Create and activate a virtual environment
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir fastapi uvicorn
 
 COPY --from=builder /app/start.sh /app/start.sh
 COPY --from=builder /app/main.py /app/main.py  
